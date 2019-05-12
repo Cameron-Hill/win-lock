@@ -6,5 +6,4 @@ config = {
 }
 
 test_salt = b'salty_boy'
-derived_test_key = b'test'
-
+derived_test_key = b'hDKUGH8EBe9czmbcvE8GemcrTQbm5BKjxsQloHEoI7o='
