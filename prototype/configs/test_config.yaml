@@ -1,0 +1,4 @@
+user: test_user
+password: test_password
+log_dir: D:\cambo\Docs\Projects\win-lock\prototype\logs
+log_level: debug
