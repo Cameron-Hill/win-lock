@@ -10,8 +10,9 @@ from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 import logging
 logger = logging.getLogger()
 pwd_attempts = 0
-
+log_dir = os.path.realpath(os.path.join(os.path.dirname(win_lock.__file__), os.pardir,os.pardir,'logs'))
 def configure_logger(log_file, level):
+    os.mkdir(log_dir) if not os.path.exists(log_dir) else None
     logger.setLevel(logging.DEBUG)
 
     # create console handler and set level to info
@@ -48,9 +49,9 @@ def init():
     config = {
         'user': 'test_user',
         'password': None,
-        'log_dir': r'D:\cambo\Docs\Projects\win-lock\prototype\logs',
+        'log_dir': log_dir,
         'log_level': 'debug',
-        'database': r'D:\cambo\Docs\Projects\win-lock\prototype\tests\test_data\test_database.db'
+        #'database': r'D:\cambo\Docs\Projects\win-lock\prototype\tests\test_data\test_database.db'
     }
     configure_logger(config['log_dir'], config['log_level'])
     main(app, config)
