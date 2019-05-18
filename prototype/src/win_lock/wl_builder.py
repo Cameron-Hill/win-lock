@@ -18,7 +18,8 @@ def build(file_):
 
     py_in = os.path.realpath(os.path.join(sys.executable,os.pardir,'Scripts','pyinstaller.exe'))
     try:
-        p = Popen([py_in, '-F', '--add-data {};.'.format(file_), os.path.join(work_dir,'data_wrapper.py','-n',os.path.basename(file_))],stdout=PIPE,stderr=PIPE)
+        p = Popen([py_in, '-F', '--add-data', '{};.'.format(file_), os.path.abspath('data_wrapper.py'), '-n',
+                   os.path.basename(file_)], stdout = PIPE, stderr = PIPE)
         out, err = p.communicate()
         print(out)
         print()
