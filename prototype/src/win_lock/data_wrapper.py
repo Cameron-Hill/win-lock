@@ -1,3 +1,4 @@
+file_ = '$'
 import sys
 import os
 from PyQt5.QtWidgets import (QLineEdit, QApplication, QInputDialog, QMessageBox)
@@ -14,8 +15,7 @@ def configure_logger(log_file, level):
     logger.setLevel(logging.DEBUG)
 
     # create console handler and set level to info
-    handler = logging.StreamHandler(stream=sys.stdout
-                                    )
+    handler = logging.StreamHandler(stream=sys.stdout)
     handler.setLevel(logging.INFO)
     formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
     handler.setFormatter(formatter)
@@ -42,8 +42,6 @@ def getPassword():
         logger.info("User Canceled password input")
         sys.exit(1)
     return pwd
-
-file_ = 'data.txt.wl'
 
 def init():
     app = QApplication(sys.argv)
