@@ -1,7 +1,7 @@
 import os
 import pytest
 from win_lock.data_manager import DataManager
-from .defaults import *
+from prototype.tests.defaults import *
 import sqlite3
 
 test_database = config['database']

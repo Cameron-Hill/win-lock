@@ -1,4 +1,5 @@
-file_ = '$'
+file_ = '$DATA_FILE'
+log_file = '$LOG_FILE'
 import sys
 import os
 from PyQt5.QtWidgets import (QLineEdit, QApplication, QInputDialog, QMessageBox)
@@ -10,24 +11,16 @@ from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 import logging
 logger = logging.getLogger()
 pwd_attempts = 0
-log_dir = os.path.realpath(os.path.join(os.path.dirname(win_lock.__file__), os.pardir,os.pardir,'logs'))
-def configure_logger(log_file, level):
-    os.mkdir(log_dir) if not os.path.exists(log_dir) else None
+
+def configure_logger():
+    os.mkdir(os.path.dirname(log_file)) if not os.path.exists(os.path.dirname(log_file)) else None
     logger.setLevel(logging.DEBUG)
-
-    # create console handler and set level to info
-    handler = logging.StreamHandler(stream=sys.stdout)
-    handler.setLevel(logging.INFO)
-    formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
-    handler.setFormatter(formatter)
-    logger.addHandler(handler)
-
-    # create debug file handler and set level to debug
-    handler = logging.FileHandler(os.path.join(log_file, "wrapper_prototype.log"))
+    handler = logging.FileHandler(log_file)
     handler.setLevel(logging.DEBUG)
     formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
     handler.setFormatter(formatter)
     logger.addHandler(handler)
+    logger.info("SESSION INITIALISED FOR: {}".format(file_))
 
 
 def resource_path(relative_path):
@@ -49,17 +42,15 @@ def init():
     config = {
         'user': 'test_user',
         'password': None,
-        'log_dir': log_dir,
         'log_level': 'debug',
         #'database': r'D:\cambo\Docs\Projects\win-lock\prototype\tests\test_data\test_database.db'
     }
-    configure_logger(config['log_dir'], config['log_level'])
+    configure_logger()
     main(app, config)
 
 def main(app, config):
     config['password'] = getPassword()
     try:
-        logger.info("STARTED")
         manager = CryptManager(config, b'salty_boy')
         with open(resource_path(file_), 'rb') as f:
             encrypted_bytes = f.read()
@@ -74,9 +65,10 @@ def main(app, config):
             return main(app, config)
 
         logger.info("Decrypted {}".format(file_))
-        with open(os.path.join(os.getcwd(),'data.txt'), 'wb') as f:
+        out_file = file_.replace('.wl','')
+        with open(os.path.join(os.getcwd(),out_file), 'wb') as f:
             f.write(decrypted_data)
-        logger.info("Wrote {}".format(os.path.abspath(file_)))
+        logger.info("Wrote {}".format(os.path.abspath(out_file)))
         logger.info("Done")
     except Exception as e:
         logger.exception("FAILED -- {}".format(e))

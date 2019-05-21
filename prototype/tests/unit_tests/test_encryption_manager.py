@@ -1,10 +1,11 @@
 import os
+import shutil
 import pytest
 from copy import deepcopy
 from win_lock import encryption_manager
-from .defaults import *
+from prototype.tests.defaults import *
 
-data_dir = os.path.join(os.path.dirname(__file__), 'test_data')
+data_dir = os.path.join(os.path.dirname(__file__),os.pardir, 'test_data')
 
 @pytest.fixture()
 def manager():
@@ -43,3 +44,20 @@ def test_encrypt_and_decrypt_bytes(manager):
     assert manager.decrypt_bytes(encrypted_data) == data, 'Failed to successfully decrypt data'
 
 
+def test_encrypt_file_and_remove(manager):
+    base_file = os.path.join(data_dir,'test_text.txt')
+    test_file = base_file+'.2'
+    shutil.copy(base_file,test_file)
+    manager.encrypt_and_delete_file(test_file, passes=1)
+    assert not os.path.exists(test_file)
+    assert os.path.exists(test_file+'.wl')
+    os.remove(test_file+'.wl')
+
+def test_encrypt_file_and_remove_with_10_passes(manager):
+    base_file = os.path.join(data_dir,'test_text.txt')
+    test_file = base_file+'.2'
+    shutil.copy(base_file,test_file)
+    manager.encrypt_and_delete_file(test_file, passes=10)
+    assert not os.path.exists(test_file)
+    assert os.path.exists(test_file + '.wl')
+    os.remove(test_file + '.wl')
