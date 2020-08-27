@@ -2,8 +2,7 @@
 win-lock
 ========
 
-
-Add a short description here!
+Wrap any filetype in windows in a small executable that will encrypt/decrypt itself.
 
 
 Description
